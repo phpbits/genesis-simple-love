@@ -21,7 +21,7 @@ if ( typeof Object.create !== 'function' ) {
 			love_txt = simple_love.fe.replace('<!--__love__-->', fix.val());
 			love_html = love_txt.replace('--__id__--', fix.attr('data-id'));
 			love_html = love_html.replace('"--__id__--"', '"' + fix.attr('data-id') + '"');
-			console.log(love_html);
+			// console.log(love_html);
 		}
 		return love_html;
 	} );
