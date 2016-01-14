@@ -52,6 +52,9 @@ e.g.
 
 == Changelog ==
 
+= 1.0.1 =
+* Remove alert confirmation
+
 = 1.0 =
 * Initial Plugin release
 
