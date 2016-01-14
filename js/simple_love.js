@@ -37,8 +37,9 @@ if ( typeof Object.create !== 'function' ) {
 				success: function(response){
 					if(response.type == 'success'){
 						$('#'+ get_this + ' .count').html( response.count );
+						$( '#'+ get_this ).addClass( 'genesis_simple_loved' );
 					}
-					alert(response.message);
+					// alert(response.message);
 					
 				}
  			});
