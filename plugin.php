@@ -3,7 +3,7 @@
 Plugin Name: Genesis Simple Love
 Plugin URI: https://wordpress.org/plugins/genesis-simple-love
 Description: Add Love feature on Genesis Simple Share Plugin. <strong>This plugin requires Genesis Simple Share. Thanks!</strong>
-Version: 1.0
+Version: 1.0.1
 Author: phpbits
 Author URI: http://codecanyon.net/user/phpbits/portfolio?ref=phpbits
 License: GPL2
