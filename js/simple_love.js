@@ -13,7 +13,7 @@ if ( typeof Object.create !== 'function' ) {
 	};
 }
 
-(function( $, window, document, undefined ) {	
+(function( $, window, document, undefined ) {
 	$('.share-filled, .share-outlined').append( function(){
 		love_html = simple_love.fe;
 		fix = $(this).parent('.entry-content').find('.simple-love-fix');
@@ -27,20 +27,21 @@ if ( typeof Object.create !== 'function' ) {
 	} );
 	$('.share-filled .simple-love, .share-outlined .simple-love').on('click',function(e){
 		var post_id = parseInt( $(this).attr('data-id') );
-		var get_this = $(this).attr('id'); 
+		var get_this = $(this).attr('id');
 		if( post_id > 0){
 			jQuery.ajax({
-				type : "post",
-				dataType : "json",
+				type : 'post',
+				dataType : 'json',
 				url : simple_love.ajaxurl,
-				data : {action: "genesis_simple_love", post_id : post_id, nonce: simple_love.nonce},
+				data : {action: 'genesis_simple_love', post_id : post_id, nonce: simple_love.nonce},
 				success: function(response){
 					if(response.type == 'success'){
 						$('#'+ get_this + ' .count').html( response.count );
 						$( '#'+ get_this ).addClass( 'genesis_simple_loved' );
 					}
-					// alert(response.message);
-					
+					$( $( '#' + get_this + ' .share' ) ).html( response.loved );
+					// alert( response.message );
+
 				}
  			});
 		}
