@@ -123,4 +123,8 @@ class PHPBITS_GenesisSimpleLove{
 		return $content;
 	}
 }
+
 new PHPBITS_GenesisSimpleLove();
+
+//add widget, @since 2.0
+require_once plugin_dir_path( __FILE__ ) . 'includes/widget.php';
