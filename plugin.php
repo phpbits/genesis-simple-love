@@ -61,6 +61,7 @@ class PHPBITS_GenesisSimpleLove{
 		}
 
 		//check if already loved
+		$loved = array();
 		if( isset( $_COOKIE['genesis_simple_love'] ) ){
             $loved = @unserialize( base64_decode ($_COOKIE['genesis_simple_love'] ) );
         }

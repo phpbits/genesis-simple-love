@@ -26,7 +26,7 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 				'description' => __( 'Your site\'s most loved posts or post types', 'genesis-simple-love' ),
 				'customize_selective_refresh' => true,
 			);
-			
+
 			parent::__construct( 'genesis_simple_love', __( 'Genesis - Simple Love' ), $widget_ops );
 		}
 
@@ -43,28 +43,33 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 		public function widget( $args, $instance ) {
 
 			/** This filter is documented in wp-includes/widgets/class-wp-widget-pages.php */
-			$title = apply_filters( 'easy_rich_text_widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
+			$title = apply_filters( 'genesis_simple_love_widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
 
-			$widget_text = ! empty( $instance['text'] ) ? $instance['text'] : '';
+			$post_type 	= ! empty( $instance['post_type'] ) ? $instance['post_type'] : 'post';
+			$number 	= ! empty( $instance['number'] ) ? $instance['number'] : 5;
 
-			/**
-			 * Filters the content of the Text widget.
-			 *
-			 * @since 1.0
-			 * @since 1.0 Added the `$this` parameter.
-			 *
-			 * @param string         						$widget_text The widget content.
-			 * @param array          						$instance    Array of settings for the current widget.
-			 * @param WP_Widget_Genesis_Simple_Love $this        Current Text widget instance.
-			 */
-			$text = apply_filters( 'easy_rich_text_widget_text', $widget_text, $instance, $this );
+			$query_args = array(
+					'post_type' 	 => $post_type,
+					'posts_per_page' => $number,
+					'post_status' 	 => 'publish'
+			);
 
 			echo $args['before_widget'];
 			if ( ! empty( $title ) ) {
 				echo $args['before_title'] . $title . $args['after_title'];
-			} ?>
-				<div class="textwidget"><?php echo !empty( $instance['filter'] ) ? wpautop( $text ) : $text; ?></div>
-			<?php
+			}
+
+			$query = new WP_Query( $query_args );
+			if( $query->have_posts() ):
+				echo '<ul>';
+            	while ( $query->have_posts() ) { $query->the_post();
+			?>
+				<li><a href="<?php the_permalink();?>"><?php the_title();?></a></li>
+			<?php }
+				echo '</ul>';
+			wp_reset_query();
+			wp_reset_postdata();
+			endif;
 			echo $args['after_widget'];
 		}
 
@@ -80,14 +85,11 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 		 * @return array Settings to save or bool false to cancel saving.
 		 */
 		public function update( $new_instance, $old_instance ) {
-			$instance = $old_instance;
-			$instance['title'] = sanitize_text_field( $new_instance['title'] );
-			if ( current_user_can( 'unfiltered_html' ) ) {
-				$instance['text'] = $new_instance['text'];
-			} else {
-				$instance['text'] = wp_kses_post( $new_instance['text'] );
-			}
-			$instance['filter'] = ! empty( $new_instance['filter'] );
+			$instance 				= $old_instance;
+			$instance['title'] 		= sanitize_text_field( $new_instance['title'] );
+			$instance['post_type'] 	= sanitize_text_field( $new_instance['post_type'] );
+			$instance['number'] 	= sanitize_text_field( $new_instance['number'] );
+
 			return $instance;
 		}
 
@@ -100,13 +102,36 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 		 * @param array $instance Current settings.
 		 */
 		public function form( $instance ) {
-			$instance 	= wp_parse_args( (array) $instance, array( 'title' => '', 'text' => '' ) );
+			$instance 	= wp_parse_args( (array) $instance, array( 'title' => '', 'post_type' => 'post', 'number' => '5' ) );
 			$filter 	= isset( $instance['filter'] ) ? $instance['filter'] : 0;
 			$title 		= sanitize_text_field( $instance['title'] );
+			$type 		= sanitize_text_field( $instance['post_type'] );
+			$number 	= sanitize_text_field( $instance['number'] );
+
+			$post_types = get_post_types( array( 'public' => true ) );
+			unset( $post_types['attachment'] );
+
 			?>
 			<p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', 'genesis-simple-love' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
 
+			<p><label for="<?php echo $this->get_field_id( 'post_type' ); ?>"><?php _e( 'Post Type:', 'genesis-simple-love' ); ?></label>
+			<select class="widefat" id="<?php echo $this->get_field_id( 'post_type' ); ?>" name="<?php echo $this->get_field_name( 'post_type' ); ?>">
+				<?php if( !empty( $post_types ) ){
+					foreach ( $post_types as $post_type ) {
+						echo '<option value="'. $post_type .'" '. ( ( $type == $post_type ) ? 'selected="selected"' : '' ) .' >'. $post_type .'</option>';
+					}
+				}?>
+			</select>
+
+			<p><label for="<?php echo $this->get_field_id( 'number' ); ?>"><?php _e( 'Number of posts to show:', 'genesis-simple-love' ); ?></label>
+			<input class="tiny-text" id="<?php echo $this->get_field_id( 'number' ); ?>" name="<?php echo $this->get_field_name( 'number' ); ?>" type="number" value="<?php echo esc_attr( $number ); ?>" size="3" step="1" min="1" /></p>
+
+			<?php if( !class_exists('PHPBITS_extendedWidgetsDisplay') ):?>
+				<div class="genesis-simple-love-widget--after">
+					<a href="http://widget-options.com?utm_source=genesis-simple-love-widget" target="_blank" style="display:block;text-decoration:none;color:#31708f;background:#d9edf7;border:1px solid #bcdff1;padding:5px 7px;font-size:12px;margin-bottom:15px;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;-o-border-radius:3px;border-radius:3px" ><?php _e( '<strong>Manage your widgets</strong> visibility, styling, alignment, columns, restrictions and more. Click here to learn more. ', 'genesis-simple-love' );?></a>
+				</div>
+			<?php endif;?>
 
 			<?php
 		}
