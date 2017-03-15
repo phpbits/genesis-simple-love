@@ -16,3 +16,11 @@
 
 .share-outlined .simple-love:hover .share,
 .share-outlined .simple-love:hover .count { background: #ae1319; color: #fff; }
+
+.share-outlined.share-small .simple-love .share, .share-outlined.share-medium .simple-love .share{
+	border-right: none;
+}
+
+.share-outlined.share-tall .simple-love .share{
+	border-top: none;
+}
