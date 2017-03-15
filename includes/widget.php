@@ -51,7 +51,10 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 			$query_args = array(
 					'post_type' 	 => $post_type,
 					'posts_per_page' => $number,
-					'post_status' 	 => 'publish'
+					'post_status' 	 => 'publish',
+					'orderby'   	 => 'meta_value_num',
+					'meta_key' 		 => '_genesis_simple_love_',
+
 			);
 
 			echo $args['before_widget'];
@@ -60,16 +63,33 @@ if( !class_exists( 'WP_Widget_Genesis_Simple_Love' ) ):
 			}
 
 			$query = new WP_Query( $query_args );
-			if( $query->have_posts() ):
+
+			if( $query->have_posts() ){
 				echo '<ul>';
             	while ( $query->have_posts() ) { $query->the_post();
 			?>
 				<li><a href="<?php the_permalink();?>"><?php the_title();?></a></li>
 			<?php }
 				echo '</ul>';
-			wp_reset_query();
-			wp_reset_postdata();
-			endif;
+				wp_reset_query();
+				wp_reset_postdata();
+			}else{
+				//show recent posts whenever there's no loved posts yet to avoid empty widget
+				$query_args['orderby'] 	= 'date';
+				$query_args['order'] 	= 'DESC';
+				$query_args['meta_key'] = '';
+				$query2 = new WP_Query( $query_args );
+
+				if( $query2->have_posts() ){
+					echo '<ul>';
+	            	while ( $query2->have_posts() ) { $query2->the_post(); ?>
+							<li><a href="<?php the_permalink();?>"><?php the_title();?></a></li>
+					<?php }
+					echo '</ul>';
+					wp_reset_query();
+					wp_reset_postdata();
+				}
+			}
 			echo $args['after_widget'];
 		}
 
