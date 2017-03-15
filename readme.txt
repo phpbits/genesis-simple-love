@@ -21,6 +21,9 @@ genesis_simple_love_text - Use this filter if you want to change the "Love" text
 genesis_simple_love_message - Use this filter if you want to change the "Thank You for loving this!" alert message.<br />
 genesis_simple_loved - Use this filter if you want to change the "You already loved this. Thanks!" alert message.<br />
 
+<h3>Most Loved Posts or any Post Types Widget</h3>
+Display your selected post type's most loved posts and display them on your sidebar widgets easily using <strong>Genesis - Simple Love Widget</strong>.
+
 This plugin uses cookie to check if the user already loved the post. Thanks!
 
 <em>Please check my other <a href="https://phpbits.net/">WordPress plugins</a>. It's all been tested and working perfectly on Genesis Framework. Thanks!</em><br />
