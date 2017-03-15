@@ -8,14 +8,14 @@
 .share-filled .simple-love:hover .count 	{ background: #ae1319 !important; }
 
 .share-filled .simple-love:hover .share,
-.share-filled .simple-love:hover .count { background: #ae1319; color: #fff; }
+.share-filled .simple-love:hover .count 	{ background: #ae1319; color: #fff; }
 
 .share-outlined .simple-love .share,
 .share-outlined .simple-love .count,
-.share-outlined .simple-love .count:hover		{ border: 1px solid #ae1319; color: #ae1319; }
+.share-outlined .simple-love .count:hover	{ border: 1px solid #ae1319; color: #ae1319; }
 
 .share-outlined .simple-love:hover .share,
-.share-outlined .simple-love:hover .count { background: #ae1319; color: #fff; }
+.share-outlined .simple-love:hover .count 	{ background: #ae1319; color: #fff; }
 
 .share-outlined.share-small .simple-love .share, .share-outlined.share-medium .simple-love .share{
 	border-right: none;
